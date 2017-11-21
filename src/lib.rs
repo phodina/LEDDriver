@@ -1,11 +1,16 @@
+use std::cell::Cell;
+
 struct LEDDriver<'a>{
-	address : &'a u32
+	address: &'a Cell<u32>
 }
 
 impl <'a>LEDDriver<'a> {
 
-	fn new(address : &'a u32) -> Self {
-		LEDDriver { address : address}
+	fn new(address: &'a Cell<u32>) -> Self {
+
+		let leddriver = LEDDriver { address : address};
+		leddriver.address.set(0);
+		leddriver
 	}
 }
 
@@ -16,9 +21,11 @@ mod tests {
     // TODO: All LEDs shall be off after the driver initialization.
     #[test]
     fn driver_init_leds_off () {
-    	let addr = &0xffffffff;
+
+    	let ref mut addr = Cell::new(0xffffffff);
     	let leddriver = LEDDriver::new(addr);
-    	assert_eq!(0, *addr);
+
+    	assert_eq!(0, addr.get());
     }
     // TODO: A single LED can be turned on.
     // TODO: A single LED can be turned off.
