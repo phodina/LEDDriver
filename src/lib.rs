@@ -74,6 +74,11 @@ impl <'a>LEDDriver<'a> {
             LEDs::Led16 => self.address.set(self.address.get() & !(1<<15)),
         }
     }
+
+    fn turn_all_leds_on (&mut self) {
+
+        self.address.set(0xffffffff);
+    }
 }
 
 #[cfg(test)]
@@ -134,7 +139,15 @@ mod tests {
         leddriver.turn_off(LEDs::Led9);
         assert_eq!(1<<7, addr.get());
     }
-    // TODO6: Turn on all LEDs.
+    // REQ6: Turn on all LEDs.
+    #[test]
+    fn turn_all_leds_on () {
+
+        let ref mut addr = Cell::new(0x00000000);
+        let mut leddriver = LEDDriver::new(addr);
+        leddriver.turn_all_leds_on();
+        assert_eq!(0xffffffff, addr.get());
+    }
     // TODO7: Turn off all LEDs.
     // TODO8: Query LED state.
     // TODO9: Check boundary values.
