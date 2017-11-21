@@ -90,18 +90,17 @@ mod tests {
     }
     // TODO: A single LED can be turned on.
     #[test]
-    fn diver_single_led_on () {
+    fn diver_turn_on_led_one () {
 
         let ref mut addr = Cell::new(0x00000000);
         let mut leddriver = LEDDriver::new(addr);
-        leddriver.turn_off(LEDs::Led1);
         leddriver.turn_on(LEDs::Led1);
         assert_eq!(1, addr.get());
 
     }
     // TODO: A single LED can be turned off.
     #[test]
-    fn diver_single_led_off () {
+    fn diver_turn_off_led_one () {
 
         let ref mut addr = Cell::new(0xffffffff);
         let mut leddriver = LEDDriver::new(addr);
