@@ -54,23 +54,24 @@ impl <'a>LEDDriver<'a> {
     }
 
     fn turn_off (&mut self, led : LEDs) {
+
         match led {
-            LEDs::Led1 => self.address.set(0),
-            LEDs::Led2 => self.address.set(0),
-            LEDs::Led3 => self.address.set(0),
-            LEDs::Led4 => self.address.set(0),
-            LEDs::Led5 => self.address.set(0),
-            LEDs::Led6 => self.address.set(0),
-            LEDs::Led7 => self.address.set(0),
-            LEDs::Led8 => self.address.set(0),
-            LEDs::Led9 => self.address.set(0),
-            LEDs::Led10 => self.address.set(0),
-            LEDs::Led11 => self.address.set(0),
-            LEDs::Led12 => self.address.set(0),
-            LEDs::Led13 => self.address.set(0),
-            LEDs::Led14 => self.address.set(0),
-            LEDs::Led15 => self.address.set(0),
-            LEDs::Led16 => self.address.set(0),
+            LEDs::Led1 => self.address.set(self.address.get() & !(1<<0)),
+            LEDs::Led2 => self.address.set(self.address.get() & !(1<<1)),
+            LEDs::Led3 => self.address.set(self.address.get() & !(1<<2)),
+            LEDs::Led4 => self.address.set(self.address.get() & !(1<<3)),
+            LEDs::Led5 => self.address.set(self.address.get() & !(1<<4)),
+            LEDs::Led6 => self.address.set(self.address.get() & !(1<<5)),
+            LEDs::Led7 => self.address.set(self.address.get() & !(1<<6)),
+            LEDs::Led8 => self.address.set(self.address.get() & !(1<<7)),
+            LEDs::Led9 => self.address.set(self.address.get() & !(1<<8)),
+            LEDs::Led10 => self.address.set(self.address.get() & !(1<<9)),
+            LEDs::Led11 => self.address.set(self.address.get() & !(1<<10)),
+            LEDs::Led12 => self.address.set(self.address.get() & !(1<<11)),
+            LEDs::Led13 => self.address.set(self.address.get() & !(1<<12)),
+            LEDs::Led14 => self.address.set(self.address.get() & !(1<<13)),
+            LEDs::Led15 => self.address.set(self.address.get() & !(1<<14)),
+            LEDs::Led16 => self.address.set(self.address.get() & !(1<<15)),
         }
     }
 }
@@ -109,7 +110,7 @@ mod tests {
         assert_eq!(0, addr.get());
 
     }
-    // TODO4: Multiple LEDs can be turned on.
+    // REQ4: Multiple LEDs can be turned on.
     #[test]
     fn turn_on_multiple_leds () {
 
@@ -119,7 +120,20 @@ mod tests {
         leddriver.turn_on(LEDs::Led9);
         assert_eq!(1<<7 | 1<<8, addr.get());
     }
-    // TODO5: Multiple LEDs can be turned off.
+    // REQ5: Multiple LEDs can be turned off.
+    #[test]
+    fn turn_off_multiple_leds () {
+
+        let ref mut addr = Cell::new(0x00000000);
+        let mut leddriver = LEDDriver::new(addr);
+        leddriver.turn_on(LEDs::Led7);
+        leddriver.turn_on(LEDs::Led8);
+        leddriver.turn_on(LEDs::Led9);
+
+        leddriver.turn_off(LEDs::Led7);
+        leddriver.turn_off(LEDs::Led9);
+        assert_eq!(1<<7, addr.get());
+    }
     // TODO6: Turn on all LEDs.
     // TODO7: Turn off all LEDs.
     // TODO8: Query LED state.
