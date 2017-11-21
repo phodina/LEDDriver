@@ -52,6 +52,27 @@ impl <'a>LEDDriver<'a> {
             LEDs::Led16 => self.address.set(1<<15),
         }
     }
+
+    fn turn_off (&mut self, led : LEDs) {
+        match led {
+            LEDs::Led1 => self.address.set(0),
+            LEDs::Led2 => self.address.set(0),
+            LEDs::Led3 => self.address.set(0),
+            LEDs::Led4 => self.address.set(0),
+            LEDs::Led5 => self.address.set(0),
+            LEDs::Led6 => self.address.set(0),
+            LEDs::Led7 => self.address.set(0),
+            LEDs::Led8 => self.address.set(0),
+            LEDs::Led9 => self.address.set(0),
+            LEDs::Led10 => self.address.set(0),
+            LEDs::Led11 => self.address.set(0),
+            LEDs::Led12 => self.address.set(0),
+            LEDs::Led13 => self.address.set(0),
+            LEDs::Led14 => self.address.set(0),
+            LEDs::Led15 => self.address.set(0),
+            LEDs::Led16 => self.address.set(0),
+        }
+    }
 }
 
 #[cfg(test)]
@@ -73,11 +94,22 @@ mod tests {
 
         let ref mut addr = Cell::new(0x00000000);
         let mut leddriver = LEDDriver::new(addr);
+        leddriver.turn_off(LEDs::Led1);
         leddriver.turn_on(LEDs::Led1);
         assert_eq!(1, addr.get());
 
     }
     // TODO: A single LED can be turned off.
+    #[test]
+    fn diver_single_led_off () {
+
+        let ref mut addr = Cell::new(0xffffffff);
+        let mut leddriver = LEDDriver::new(addr);
+        leddriver.turn_on(LEDs::Led1);
+        leddriver.turn_off(LEDs::Led1);
+        assert_eq!(0, addr.get());
+
+    }
     // TODO: Multiple LEDs can be turned on/off.
     // TODO: Turn on all LEDs.
     // TODO: Turn off all LEDs.
